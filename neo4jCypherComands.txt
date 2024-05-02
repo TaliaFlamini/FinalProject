@@ -1,0 +1,26 @@
+ ##Cypher command to load .csv into neo4j
+
+
+LOAD CSV WITH HEADERS FROM 'file:///Electric_Vehicle_Population_Data.csv' AS row
+MERGE (order:Order {VehicleID: toInteger(row.`DOL Vehicle ID`)})
+ON CREATE SET
+    order.county = row.`County`,
+    order.city = row.`City`,
+    order.ModelYear = toInteger(row.`Model Year`),
+    order.Make = row.`Make`,
+    order.Model = row.`Model`,
+    order.ElectricRange = toInteger(row.`Electric Range`),
+    order.LegislativeDistrict = toInteger(row.`Legislative District`),
+    order.ElectricUtility = row.`Electric Utility`,
+    order.ElectricVehicleType = row.`Electric Vehicle Type`
+
+
+
+
+
+
+## Command to return data uploaded into viewable table in neo4j
+
+
+MATCH (o:Order)
+RETURN o.county, o.city, o.VehicleID, o.ModelYear, o.Make, o.Model, o.ElectricRange, o.LegislativeDistrict, o.ElectricUtility, o.ElectricVehicleType
